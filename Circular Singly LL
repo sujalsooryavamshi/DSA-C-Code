@@ -9,7 +9,7 @@ main()
 {
     struct node *head,*newnode,*temp;
     int choice=1,cnt=0;
-    head=0;
+    head=null;
     printf("Intsert the node and to terminate press -1\n");
     printf("Enter the data\n");
     while(1)
@@ -19,7 +19,7 @@ main()
           if(newnode->data==-1)
              break;
           newnode->next=0;
-    if(head==0)
+    if(head==null)
       head=temp=newnode;
     else
     {
