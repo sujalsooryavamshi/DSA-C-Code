@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+// Double the Number in the linked list
 // Define a node structure for a linked list
 struct Node {
     int data;
