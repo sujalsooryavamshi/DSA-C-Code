@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct tree {
+    int data;
+    struct tree *left, *right;
+};
+
+struct tree *root1 = NULL;
+struct tree *root2=NULL;
+struct tree* create();
+int isidentical(struct tree *r1,struct tree *r2);
+int main() {
+    printf("write the first tree\n");
+    root1= create();
+    printf("Write the second tree\n");
+    root2=create();
+    if(isidentical(root1,root2))
+     printf("Given two binary tree are identical\n");
+    else
+     printf("Given two tree are not identical\n");
+}
+
+struct tree* create() {
+    int x;
+    struct tree *new;
+    new = (struct tree *)malloc(sizeof(struct tree));
+
+    printf("Enter the data(-1 to exit)\n");
+    scanf("%d", &x);
+
+    if (x == -1) {
+        free(new); // Free the memory allocated for the unused node
+        return NULL;
+    }
+
+    new->data = x;
+
+    printf("Enter the left child of %d\n", x);
+    new->left = create();
+
+    printf("Enter the right child of %d\n", x);
+    new->right = create();
+
+    return new;
+}
+int isidentical(struct tree *r1,struct tree *r2)
+{
+    if(r1==NULL && r2==NULL)
+      return 1;
+    if(r1==NULL || r2==NULL)
+      return 0;
+    if(r1->data==r2->data)
+     return(isidentical(r1->left,r2->left) && isidentical(r1->right,r2->right));
+     else
+      return 0;
+       
+}

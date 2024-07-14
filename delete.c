@@ -1,0 +1,30 @@
+#include<stdio.h>
+main()
+{
+    int a[50],n,num,pos,i;
+    printf("Enter the size os the array\n");
+    scanf("%d",&n);
+    if(n<0 || n>50)
+      printf("Remention the size\n");
+    else
+      printf("Enter the elements in the array\n");
+      for(i=0;i<n;++i)
+       scanf("%d",&a[i]);
+     printf("Enter the position of the element\n");
+       scanf("%d",&pos);
+    //if array is sortted
+   for(i=pos-1;i<n-1;++i)
+    {
+        a[i]=a[i+1];
+    }
+    n--;
+    printf("After deletion of the element\n");
+    for(i=0;i<n;++i)
+      printf("%d\n",a[i]);
+    //if it is unsorted array
+    a[pos-1]=a[n-1];
+    n--;
+    printf("After deletion of the element\n");
+    for(i=0;i<n;++i)
+      printf("%d\n",a[i]);
+}

@@ -1,0 +1,22 @@
+#include<stdio.h>
+int calcfact(int num);
+main()
+{
+    int num,fact;
+    printf("enter the number\n");
+    scanf("%d",&num);
+    fact=calcfact(num);
+    printf("The fact is %d\n",fact);
+}
+int calcfact(int num)
+{
+    if(num==0)
+      return(num+1);
+    if(num==1)
+      return(1);
+    if(num>1)
+     {
+        return(num*calcfact(num-1));
+     }
+
+}

@@ -1,0 +1,114 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int ph;
+    char name[25],area[25];
+    struct node *next;
+};
+struct node*insert(struct node *tel,int i)
+{
+    struct node *new=(struct node*)malloc(sizeof(struct node));
+    printf("Name,Phone No,Area of %d\n",i);
+    scanf("%s%d%s",new->name,&new->ph,&new->area);
+    new->next=NULL;
+    if(tel==NULL)
+    {
+         tel=new;
+    }
+    else
+    {
+         new->next=tel;
+         tel=new;
+    }
+ return(tel);
+}
+struct node *deleteph(struct node *tel) {
+    int ph;
+    struct node *temp, *trav, *prev;
+    printf("Enter the phone number to delete\n");
+    scanf("%d", &ph);
+    if (tel != NULL && tel->ph == ph) {
+        temp = tel;
+        tel = tel->next;
+        free(temp);
+        return tel;
+    } else if (tel == NULL) {
+        printf("No phone number found\n");
+    } else {
+        trav = prev = tel;
+        trav = trav->next;
+        while (trav != NULL) {
+            if (trav->ph == ph) {
+                temp = trav;
+                prev->next = trav->next;
+                free(temp);
+                break;
+            }
+            prev = trav;
+            trav = trav->next;
+        }
+    }
+    return tel;
+}
+void searchA(struct node *tel)
+{
+     if(tel==NULL)
+      printf("The list is empty\n");
+    else
+    {
+        int flag=0;
+        struct node *temp=tel;
+        while(temp!=NULL)
+        {
+            if(temp->name[0]=='A')
+            {
+                flag=1;
+                printf("Name :%s\tPhone no :%d\n",temp->name,temp->ph);
+            }
+            temp=temp->next;
+        }
+        if(flag==0)
+         printf("Not found\n");
+        
+    }
+}
+void display(struct node *tel)
+{
+    if(tel==NULL)
+     printf("Empty list\n");
+    else
+    {
+        struct node *temp=tel;
+        while(temp!=NULL)
+        {
+            printf("Name :%s\tPhone no: %d\t Area: %s\t\n",temp->name,temp->ph,temp->area);
+            temp=temp->next;
+        }
+    }
+}
+main()
+{
+    int num,i,ch;
+    struct node *tel=NULL;
+    printf("Enter the number of telephone holders\n");
+    scanf("%d",&num);
+    printf("Enter 1 to insert and 2 to delete based on ph and 3 to delete with A and 4 to display 5 to exit\n");
+    while(1)
+    {
+         printf("Enter the choice\n");
+         scanf("%d",&ch);
+         switch(ch)
+         {
+            case 1: for(i=1;i<num;++i)
+                      tel=insert(tel,i);
+                    break;
+            case 2: tel=deleteph(tel);
+                    break;
+            case 3: searchA(tel);
+                     break;
+            case 4: display(tel);
+                    break;
+            case 5: exit(0);
+         }
+    }
+}

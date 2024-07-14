@@ -1,0 +1,302 @@
+#include<stdio.h>
+#include<stdlib.h>
+int cntt=0,cntp=0;
+struct bst{
+    int data;
+    struct bst *left;
+    struct bst *right;
+};
+struct bst*getnewnode(int x);
+struct bst*insert(struct bst *root,int x);
+int bstsearch(struct bst *root,int data);
+int preorder(struct bst *root);
+void printgivenlevel(struct bst*root,int level);
+void printnonleaf(struct bst*root);
+void printleaf(struct bst *root);
+void rightview(struct bst *root);
+void right(struct bst *root,int level,int *max);
+int height(struct bst *root);
+void inorder(struct bst*root);
+struct bst*delete(struct bst*root,int);
+struct bst*inpredessor(struct bst*root);
+int countnodes(struct bst*);
+int smallest(struct bst *);
+void checkbst(struct bst *);
+void levelorder(struct bst*,int);
+void printcurrentorder(struct bst*,int);
+int countternon(struct bst*root,int *,int *);
+main()
+{
+    int cntt=0;int cntp=0;
+    int l;
+    struct bst *root=NULL;
+    root=insert(root,20);
+    root=insert(root,30);
+    root=insert(root,15);
+    root=insert(root,40);
+    root=insert(root,25);
+    root=insert(root,7);
+    root=insert(root,16);
+    root=insert(root,35);
+    l=bstsearch(root,30);
+    if(l=1)
+      printf("search result Found\n");
+    else
+      printf("Not Found\n");
+    printf("The preorder traversal is as follows\n");
+    preorder(root);
+    printf("\n");
+    printf("The node at given level are as follows\n");
+    printgivenlevel(root,2);
+    printf("\nThe nodes of all non leaf nodes are\n");
+    printnonleaf(root);
+    printf("\nThe all leaf nodes are as follows\n");
+    printleaf(root);
+    printf("\nThe right side view is \n");
+    rightview(root);
+    int h=height(root);
+    printf("\nThe height of the give tree is: %d\n",height(root));
+    printf("\nThe inordered list is as follows\n");
+    inorder(root);
+    delete(root,15);
+    printf("\n");
+    inorder(root);
+    printf("\nThe number of nodes are %d\n",countnodes(root));
+    printf("\nThe smallest element in the tree is %d\n",smallest(root));
+    checkbst(root);
+    printf("\n The level order traversal is as follows\n");
+    levelorder(root,h);
+    countternon(root,&cntt,&cntp);
+    printf("The leaf nodes are %d and non leaf %d\n",cntt,cntp);
+}
+struct bst*insert(struct bst *root,int x)
+{
+    
+    if(root==NULL)
+    {
+     root=getnewnode(x);
+    return root;
+    }
+    else if (x <root->data)
+    {
+        root->left= insert(root->left,x);
+    }
+    else if(x>root->data)
+    {
+        root->right= insert(root->right,x);
+    }
+    return(root);
+        
+}
+struct bst*getnewnode(int x)
+{
+    struct bst *new=(struct bst *)malloc(sizeof(struct bst));
+    new->data=x;
+    new->left=NULL;
+    new->right=NULL;
+    return(new);
+      
+}
+int bstsearch(struct bst *root,int data)
+{
+     if(root==NULL)
+       return(0);
+     else if(data==root->data)
+     {
+          return(1);
+     }
+     else if(data<root->data)
+     {
+         bstsearch(root->left,data);
+     }
+     else if(data>root->data)
+     {
+        bstsearch(root->right,data);
+     }
+}
+int preorder(struct bst *root)
+{
+     if(root==NULL)
+      return(0);
+     printf("%d\t",root->data);
+     preorder(root->left);
+     preorder(root->right);
+}
+void printgivenlevel(struct bst*root,int level)
+{
+
+    if(root==NULL)
+      return;
+    if(level==1)
+      printf("%d\t",root->data);
+    else if(level>1)
+    {
+         printgivenlevel(root->left,level-1);
+         printgivenlevel(root->right,level-1);
+    }
+}
+void printnonleaf(struct bst *root)
+{
+    if(root==NULL)
+      return;
+    if(root->left!=NULL || root->right!=NULL)
+       printf("%d\t",root->data);
+    printnonleaf(root->left);
+    printnonleaf(root->right);
+}
+void printleaf(struct bst *root)
+{
+    if(root==NULL)
+      return;
+    if(root->left==NULL && root->right==NULL)
+      printf("%d\t",root->data);
+    printleaf(root->left);
+    printleaf(root->right);
+}
+void rightview(struct bst *root)
+{
+   int max=0;
+   if(root==NULL)
+    return;
+   right(root,1,&max);
+}
+void right(struct bst *root,int level,int *max)
+{
+    if(root==NULL)
+     return;
+    if(*max<level)
+    {
+        printf("%d\t",root->data);
+        *max=level;
+    }
+    right(root->right,level+1,max);
+    right(root->left,level+1,max);
+    // same for left view also but little change
+}
+int height(struct bst *root)
+{
+  if(root==NULL)
+    return -1;
+  int left=height(root->left);
+  int right=height(root->right);
+
+  if(left>right)
+    return left+1;
+  else
+    return right+1;
+}
+//deletion
+struct bst*delete(struct bst *root,int value)
+{
+  struct bst *inpre;
+   if(root==NULL)
+    return NULL;
+   if(root->left==NULL && root->right==NULL)
+   {
+         free(root);
+         return NULL;
+   }
+   if(value < root->data)
+     root->left=delete(root->left,value);
+   else if(value > root->data)
+      root->right=delete(root->right,value);
+    else
+    {
+       inpre=inpredessor(root);
+       root->data=inpre->data;
+       root->left=delete(root->left,inpre->data);
+    } 
+    return root;
+}
+struct bst *inpredessor(struct bst*root)
+{
+    root=root->left;
+    while(root->right!=NULL)
+    {
+        inpredessor(root->right);
+    }
+   return root;
+}
+//inoder traversal
+void inorder(struct bst *root)
+{
+   if(root==NULL)
+     return ;
+   inorder(root->left);
+   printf("%d\t",root->data);
+   inorder(root->right);
+}
+// number of nodes in the tree
+int countnodes(struct bst*root)
+{
+    if(root==NULL)
+      return 0;
+    else
+      return countnodes(root->left)+countnodes(root->right)+1;
+}
+// samllest element from the bst
+int smallest(struct bst *root)
+{
+  int x;
+  struct bst *temp=root;
+   if(root==NULL)
+    return 0;
+   while(temp && temp->left!=NULL)
+   {
+        temp=temp->left;
+      }
+      x= temp->data;
+      return(x);
+}
+//check weather the given tree is bst or not
+void checkbst(struct bst*root)
+{
+   if(root==NULL)
+    return ;
+  if(root->left!=NULL && root->data< root->left->data)
+  {
+       printf("Its not the bst");
+       exit(0);
+  }
+  if(root->right!=NULL && root->data>root->right->data)
+  {
+       printf("Its not the bst");
+       exit(0);
+  }
+  checkbst(root->left);
+  checkbst(root->right);
+}
+//level order traversal
+void levelorder(struct bst*root,int height)
+{
+      if(root==NULL)
+        return NULL;
+      for(int i=1;i<=height+1;++i)
+      {
+           printcurrentorder(root,i);
+      }
+}
+void printcurrentorder(struct bst*root,int level)
+{
+    if(root==NULL)
+      return ;
+    if(level==1)
+    {
+        printf("%d\t",root->data);
+    }
+    else if(level>1){
+     printcurrentorder(root->left,level-1);
+     printcurrentorder(root->right,level-1);
+    }
+}
+int countternon(struct bst *root,int *cntt,int *cntp)
+{
+    if(root==NULL)
+     return 0;
+     if(root->left==NULL && root->right==NULL)
+      ++(*cntt);
+     if(root->left!=NULL || root->right!=NULL)
+       ++(*cntp);
+     countternon(root->left,cntt,cntp);
+     countternon(root->right,cntt,cntp);
+}

@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+main()
+{
+    struct node *head,*newnode,*temp;
+    int choice=1,cnt=0;
+    head=0;
+    printf("Intsert the node and to terminate press -1\n");
+    printf("Enter the data\n");
+    while(1)
+    {
+          newnode=(struct node*)malloc(sizeof(struct node));
+          scanf("%d",&newnode->data);
+          if(newnode->data==-1)
+             break;
+          newnode->next=0;
+    if(head==0)
+      head=temp=newnode;
+    else
+    {
+      temp->next=newnode;
+      temp=newnode;
+    }
+    temp->next=head;
+    }
+    temp=head;
+    printf("The adress of first node stored in head is %d\n",head);
+    while(temp->next!=head)
+    {
+       printf("%d\n",temp->data);
+       printf("The address of new node are %d\n",temp->next);
+       temp=temp->next;
+       ++cnt;
+    }
+    printf("%d\n",temp->data);
+    printf("The address of the last node is %d\n",temp->next);
+    printf("The number of nodes created are %d\n",cnt+1);
+      
+}

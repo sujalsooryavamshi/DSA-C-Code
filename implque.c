@@ -1,0 +1,88 @@
+// queue using stack
+#include<stdio.h>
+#define MAX 25
+struct queue{
+      int data[MAX];
+      int top;
+      int cnt;
+};
+struct queue stk1,stk2,temp;
+struct queue *tem=&temp;
+void enque(int x);
+int deque();
+void push(struct queue *sp,int d);
+int pop(struct queue*sp);
+void display();
+main()
+{
+    int da,dc,dd,th;
+    struct queue s;
+    s.top=-1;s.cnt=0;
+    enque(10);
+    enque(20);
+    enque(30);
+   da=deque();
+   printf("%d\n",da);
+   dc=deque();
+   printf("%d\n",dc);
+   dd=deque();
+   printf("%d\n",dd);
+   th=deque();
+   printf("%d",th);
+    display();
+}
+void enque(int x)
+{   
+    push(&stk1,x);
+    ++(tem->cnt);
+}
+ int deque()
+{
+    int i;
+    for(i=0;i<tem->cnt;++i)
+    {
+       int a=pop(&stk1);
+        push(&stk2,a);
+    }
+    int b=pop(&stk2);
+    --(tem->cnt);
+    for(i=0;i<tem->cnt;++i)
+    {
+        int c=pop(&stk2);
+        push(&stk1,c);
+    }
+    return(b);
+
+}
+void push(struct queue *sp,int d)
+{
+    if(sp->top==MAX-1)
+    {
+        printf("Full\n");
+    }
+    else
+    {
+     sp->top++;
+     sp->data[sp->top]=d;
+    }
+}
+int pop(struct queue*sp)
+{
+    int x;
+    if(sp->top==-1)
+    {
+        printf("Empty\n");
+    }
+    else
+    {
+       x= sp->data[sp->top];
+       sp->top--;
+    }
+      return(x);
+}
+void display()
+{
+    for (int i = 0; i < stk1.top; ++i) 
+    printf("%d\t", stk1.data[i]);
+
+}

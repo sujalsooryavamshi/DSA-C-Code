@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 50
+
+struct Stack {
+    int items[MAX];
+    int top;
+};
+
+void initStack(struct Stack *s) {
+    s->top = -1;
+}
+
+int isEmpty(struct Stack *s) {
+    return s->top == -1;
+}
+
+int isFull(struct Stack *s) {
+    return s->top == MAX - 1;
+}
+
+void push(struct Stack *s, int value) {
+    if (isFull(s)) {
+        printf("Stack overflow\n");
+        exit(1);
+    }
+
+    s->items[++s->top] = value;
+}
+
+int pop(struct Stack *s) {
+    if (isEmpty(s)) {
+        printf("Stack underflow\n");
+        exit(1);
+    }
+
+    return s->items[s->top--];
+}
+
+void deleteMiddle(struct Stack *s) {
+    int size = s->top + 1;
+    int mid = size / 2;
+
+    struct Stack tempStack;
+    initStack(&tempStack);
+
+    // Push elements from the original stack to tempStack until mid
+    for (int i = 0; i < mid; ++i) {
+        push(&tempStack, pop(s));
+    }
+
+    // Skip the middle element
+    pop(s);
+
+    // Push back the elements from tempStack to the original stack
+    while (!isEmpty(&tempStack)) {
+        push(s, pop(&tempStack));
+    }
+}
+
+void printStack(struct Stack *s) {
+    for (int i = s->top; i >= 0; --i) {
+        printf("%d\n", s->items[i]);
+    }
+}
+
+int main() {
+    struct Stack myStack;
+    initStack(&myStack);
+
+    // Push elements onto the stack
+    for (int i = 1; i <= 5; ++i) {
+        push(&myStack, i);
+    }
+
+    printf("Stack before deleting middle element:\n");
+    printStack(&myStack);
+
+    deleteMiddle(&myStack);
+
+    printf("\nStack after deleting middle element:\n");
+    printStack(&myStack);
+
+    return 0;
+} 

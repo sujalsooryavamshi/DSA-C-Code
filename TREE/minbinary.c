@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<stdlib.h>
+// key element to search in binary tree
+struct tree {
+    int data;
+    struct tree *left, *right;
+};
+
+struct tree *root = NULL;
+
+struct tree* create();
+//int search(struct tree*,int);
+int minimum(struct tree*,int);
+int main() {
+    int key;
+    root = create();
+    /*
+    printf("Enter the key element to search\n");
+    scanf("%d",&key);
+   if(search(root,key))
+      printf("Key found\n");
+    else
+      printf("Key not found\n");*/
+      int min=root->data;
+    int final=minimum(root,min);
+    printf("%d",final);
+}
+
+struct tree* create() {
+    int x;
+    struct tree *new;
+    new = (struct tree *)malloc(sizeof(struct tree));
+
+    printf("Enter the data(-1 to exit)\n");
+    scanf("%d", &x);
+
+    if (x == -1) {
+        free(new); // Free the memory allocated for the unused node
+        return NULL;
+    }
+
+    new->data = x;
+
+    printf("Enter the left child of %d\n", x);
+    new->left = create();
+
+    printf("Enter the right child of %d\n", x);
+    new->right = create();
+
+    return new;
+}
+/*int search(struct tree *root,int key)
+{
+    if(root==NULL)
+     return 0;
+    else if(root->data==key){
+      return 1;
+      exit(0);
+    }
+    else
+      return(search(root->left,key)||search(root->right,key));
+}*/
+
+int minimum(struct tree*root,int min)
+{
+    if(root==NULL)
+     return min;
+    if(root->data<min)
+     min=root->data;
+    minimum(root->left,min)&&minimum(root->right,min);
+}

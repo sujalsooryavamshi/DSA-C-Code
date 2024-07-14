@@ -1,0 +1,55 @@
+#include<stdio.h>
+#define MAX 10
+struct node{
+    int data[MAX];
+    int prio[MAX];
+    int size;
+};
+void enque(struct node *pq,int data,int prio)
+{
+     if(pq->size==MAX-1)
+      printf("Priority queue is full\n");
+     int i=pq->size-1;
+     while(i>=0 && pq->prio[i]>prio)
+     {
+           pq->data[i+1]=pq->data[i];
+           pq->prio[i+1]=pq->prio[i];
+           --i;
+     }
+     pq->data[i+1]=data;
+     pq->prio[i+1]=prio;
+     ++pq->size;
+}
+int deque(struct node *pq)
+{
+    if(pq->size==0)
+     printf("Queue is  empty\n");
+    int ele=pq->data[0];
+    for(int i=1;i<pq->size;++i)
+    {
+        pq->data[i-1]=pq->data[i];
+        pq->prio[i-1]=pq->prio[i];
+    }
+    pq->size--;
+    return(ele);
+}
+void display(struct node *pq)
+{
+    if(pq->size==0)
+     printf("Empty\n");
+    for(int i=0;i<pq->size;++i)
+    {
+        
+        printf("The data %d and prio %d\n",pq->data[i],pq->prio[i]);
+    }
+}
+main()
+{
+    struct node pq;
+    pq.size=0;
+    enque(&pq,20,3);
+    enque(&pq,30,2);
+    enque(&pq,40,1);
+    printf("The dequed element is %d\n",deque(&pq));
+    display(&pq);
+}

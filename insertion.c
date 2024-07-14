@@ -1,0 +1,38 @@
+#include<stdio.h>
+main()
+{
+    int a[50],n,i,pos,num;
+    printf("Enter the size of the array \n");
+    scanf("%d",&n);
+    if(n<0 || n>50 )
+      printf("size is not crct");
+    else
+     for(i=0;i<n;++i)
+       scanf("%d",&a[i]);
+    printf("Enter the number to be inserted\n");
+    scanf("%d",&num);
+    printf("Enter the position to be inserted\n");
+    scanf("%d",&pos);
+    if(pos==(n-1))
+    {
+       a[n]=num;
+       n++;
+    }
+    else
+    //if array is sorted theta n-p time complexity
+    for(i=n+1;i>pos-1;--i)
+    {
+        a[i]=a[i-1];
+    }
+    a[pos-1]=num;
+    n++;
+    printf("After inserting the number at specified location the array is\n");
+    for(i=0;i<n;++i)
+     printf("%d\n",a[i]);*/
+    //if the array is unsorted theta 1 time complexity
+     a[n]=a[pos-1];
+     a[pos-1]=num;
+     n++;
+      for(i=0;i<n;++i)
+     printf("%d\n",a[i]);
+}
